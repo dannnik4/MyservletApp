@@ -29,17 +29,41 @@ public class SaveServlet extends HttpServlet {
         employee.setEmail(email);
         employee.setCountry(country);
 
-        //out.println(employee.toString());
-        //out.println(EmployeeRepository.getConnection());
+        myEmployee(name, email, country, employee);
+
+        boolean nameIsNull = false;
+        boolean emailIsNull = false;
+        boolean countryIsNull = false;
+
+        nameIsNull = isNull(name, nameIsNull);
+        emailIsNull = isNull(email, emailIsNull);
+        countryIsNull = isNull(country, countryIsNull);
 
         int status = EmployeeRepository.save(employee);
-        //out.println(status);
 
         if (status > 0) {
-            out.print("Record saved successfully!");
+            out.println("Record saved successfully!");
+            out.println("Name is null: " + nameIsNull + "(" + name + ")");
+            out.println("Email is null: " + emailIsNull + "(" + email + ")");
+            out.println("Country is null: " + countryIsNull + "(" + country + ")");
         } else {
             out.println("Sorry! unable to save record");
         }
         out.close();
+    }
+
+    private boolean isNull(String name, boolean nameIsNull) {
+        // Checking if the name is null.
+        if (name == null) {
+            nameIsNull = true;
+        }
+        return nameIsNull;
+    }
+
+    private void myEmployee(String name, String email, String country, Employee employee) {
+        // Setting the values of the employee object.
+        employee.setName(name);
+        employee.setEmail(email);
+        employee.setCountry(country);
     }
 }

@@ -19,9 +19,24 @@ public class ViewServlet extends HttpServlet {
 
         List<Employee> list = EmployeeRepository.getAllEmployees();
 
-        for (Employee employee : list) {
-            out.print(employee);
+        printAllEmployees(out, list);
+
+        try {
+            if (list.size() == 0) {
+                throw new IOException();
+            }
+        } catch (IOException e) {
+            out.println("There were no employees found.");
+        } finally {
+            out.close();
         }
-        out.close();
+
+    }
+
+    private void printAllEmployees(PrintWriter out, List<Employee> list) {
+
+        for (Employee employee : list) {
+            out.println(employee);
+        }
     }
 }

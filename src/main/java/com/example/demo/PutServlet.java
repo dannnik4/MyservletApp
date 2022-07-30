@@ -31,11 +31,16 @@ public class PutServlet extends HttpServlet {
 
         int status = EmployeeRepository.update(employee);
 
-        if (status > 0) {
-            response.sendRedirect("viewServlet");
-        } else {
+        try {
+            if (status > 0) {
+                response.sendRedirect("viewServlet");
+            } else {
+                throw new IOException();
+            }
+        } catch (IOException e) {
             out.println("Sorry! unable to update record");
+        } finally {
+            out.close();
         }
-        out.close();
     }
 }
