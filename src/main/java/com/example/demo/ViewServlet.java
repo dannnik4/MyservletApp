@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/viewServlet")
@@ -17,26 +18,18 @@ public class ViewServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        List<Employee> list = EmployeeRepository.getAllEmployees();
-
-        printAllEmployees(out, list);
-
+        List<Car> list = null;
         try {
-            if (list.size() == 0) {
-                throw new IOException();
-            }
-        } catch (IOException e) {
-            out.println("There were no employees found.");
+            list = CarRepository.getAllCars();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         } finally {
             out.close();
         }
 
-    }
-
-    private void printAllEmployees(PrintWriter out, List<Employee> list) {
-
-        for (Employee employee : list) {
-            out.println(employee);
+        for (Car car : list) {
+            out.print(car);
         }
+
     }
 }

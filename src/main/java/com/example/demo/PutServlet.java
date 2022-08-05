@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 @WebServlet("/putServlet")
 public class PutServlet extends HttpServlet {
@@ -20,27 +21,30 @@ public class PutServlet extends HttpServlet {
         String sid = request.getParameter("id");
         int id = Integer.parseInt(sid);
 
-        String name = request.getParameter("name");
-        String email = request.getParameter("email");
+        String brand = request.getParameter("brand");
+        String model = request.getParameter("model");
+        String producingCountry = request.getParameter("producingCountry");
+        String bodyType = request.getParameter("bodyType");
 
-        Employee employee = new Employee();
-        employee.setId(id);
-        employee.setName(name);
-        employee.setEmail(email);
-        employee.setCountry(request.getParameter("country"));
+        Car car = new Car();
+        car.setId(id);
+        car.setBrand(brand);
+        car.setModel(model);
+        car.setProducingCountry(producingCountry);
+        car.setBodyType(bodyType);
 
-        int status = EmployeeRepository.update(employee);
-
+        int status = 0;
         try {
-            if (status > 0) {
-                response.sendRedirect("viewServlet");
-            } else {
-                throw new IOException();
-            }
-        } catch (IOException e) {
-            out.println("Sorry! unable to update record");
+            status = CarRepository.update(car);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         } finally {
             out.close();
+        }
+        if (status > 0) {
+            response.sendRedirect("viewServlet");
+        } else {
+            out.println("Sorry! unable to update record");
         }
     }
 }

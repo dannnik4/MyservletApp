@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
 
 @WebServlet("/deleteServlet")
 public class DeleteServlet extends HttpServlet {
@@ -14,13 +14,12 @@ public class DeleteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String sid = request.getParameter("id");
-        PrintWriter out = response.getWriter();
-
         int id = Integer.parseInt(sid);
-        EmployeeRepository.delete(id);
+        try {
+            CarRepository.delete(id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         response.sendRedirect("viewServlet");
-
-        out.println("User with ID " + id + " was deleted.");
-
     }
 }
