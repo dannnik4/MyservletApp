@@ -1,4 +1,7 @@
-package com.example.demo;
+package com.example.demo.clientServlets;
+
+import com.example.demo.Car;
+import com.example.demo.CarRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,8 +13,8 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/viewServlet")
-public class ViewServlet extends HttpServlet {
+@WebServlet("/getUsedCarServlet")
+public class GetUsedCarServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -20,16 +23,13 @@ public class ViewServlet extends HttpServlet {
 
         List<Car> list = null;
         try {
-            list = CarRepository.getAllCars();
+            list = CarRepository.getUsedCar();
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            out.close();
         }
-
         for (Car car : list) {
             out.print(car);
         }
-
+        out.close();
     }
 }

@@ -1,4 +1,7 @@
-package com.example.demo;
+package com.example.demo.clientServlets;
+
+import com.example.demo.Car;
+import com.example.demo.CarRepository;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -7,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+
 
 @WebServlet("/viewByIDServlet")
 public class ViewByIDServlet extends HttpServlet {
@@ -23,10 +27,9 @@ public class ViewByIDServlet extends HttpServlet {
             car = CarRepository.getCarById(id);
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            out.print(car);
-            out.close();
         }
 
+        out.print(car);
+        out.close();
     }
 }

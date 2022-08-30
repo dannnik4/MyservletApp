@@ -1,4 +1,7 @@
-package com.example.demo;
+package com.example.demo.clientServlets;
+
+import com.example.demo.Car;
+import com.example.demo.CarRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,42 +12,48 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
-@WebServlet("/putServlet")
-public class PutServlet extends HttpServlet {
+@WebServlet("/saveServlet")
+public class SaveServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
 
-        String sid = request.getParameter("id");
-        int id = Integer.parseInt(sid);
+        PrintWriter out = response.getWriter();
 
         String brand = request.getParameter("brand");
         String model = request.getParameter("model");
         String producingCountry = request.getParameter("producingCountry");
         String bodyType = request.getParameter("bodyType");
+        Boolean isUsed = Boolean.valueOf(request.getParameter("isUsed"));
+
 
         Car car = new Car();
-        car.setId(id);
+
         car.setBrand(brand);
         car.setModel(model);
         car.setProducingCountry(producingCountry);
         car.setBodyType(bodyType);
+        car.setIsUsed(isUsed);
+
+        //out.println(car.toString());
+        //out.println(CarRepository.getConnection());
 
         int status = 0;
         try {
-            status = CarRepository.update(car);
+            status = CarRepository.save(car);
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            out.close();
         }
+        //out.println(status);
+
         if (status > 0) {
-            response.sendRedirect("viewServlet");
+            out.print("Record saved successfully!");
         } else {
-            out.println("Sorry! unable to update record");
+            out.println("Sorry! unable to save record");
         }
+        out.close();
     }
 }

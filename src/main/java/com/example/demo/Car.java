@@ -14,6 +14,8 @@ public class Car {
     private String model;
     private String producingCountry;
     private String bodyType;
+    private Boolean isDeletedCar = Boolean.FALSE;
+    private Boolean isUsed;
 
     @Override
     public String toString() {
@@ -23,6 +25,8 @@ public class Car {
                 ", model='" + model + '\'' +
                 ", producingCountry='" + producingCountry + '\'' +
                 ", bodyType='" + bodyType + '\'' +
+                ", isDeletedCar=" + isDeletedCar +
+                ", isUsed='" + isUsed + '\'' +
                 '}';
     }
 }
